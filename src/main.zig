@@ -10,7 +10,8 @@ const std=@import("std");
 const print=std.debug.print;
 
 pub fn main() !void {
-    var board:[3][3]u8 =.{
+
+var board:[3][3]u8 =.{
       {0,0,0},
       {0,0,0},
       {0,0,0}
@@ -20,8 +21,11 @@ pub fn main() !void {
 
     const buffer:[2]u8=undefined;
     var turn:u8=1;
+    var min:u8=0;
+
     while(true){
-        const result=isWon(board);
+        if(min>2)
+        const result=isWon(board,turn);
 
         if(std.mem.equal(result,1)|| std.mem.equal(result,2))
        {
@@ -44,29 +48,42 @@ pub fn main() !void {
 
 
     }
-    pub fn isWon(matrix:*[3][3]u8) u8 {
+    pub fn isWon(matrix:*[3][3]u8,player:u8) u8 {
+        //diagonal
+        if(matrix[0][0]==player
+            and matrix[1][1]==player
+            and matrix[2][2]==player)
+             return player;
+     //anti-diagonal
+        if(matrix[0][2]==player
+             and matrix[1][1]==player
+             and matrix[2][0]==player)
+             return player;
         //rows
       for(0..3) |i| {
-          if(matrix[i][0]!=@as(u8,0)){
-              if(matrix[i][0]==matrix[i][1] and matrix[i][1]==matrix[i][2])
-              {
-                  return matrix[i][0];
-              }
+
+              if(matrix[i][0]==player
+                  and matrix[i][1]==player
+                  and matrix[i][2]==player)
+
+                  return player ;
+
 
           }
-          //col
-          /   for(0..3) |j| {
-              for(0..3) |i|{
-                  if(matrix[i][j]!=@as(u8,0))
-              }
-              if(matrix[i][0]!=@as(u8,0)){
-                  if(matrix[i][0]==matrix[i][1] and matrix[i][1]==matrix[i][2])
-                  {
-                      return matrix[i][0];
-                  }
+
+    //col
+
+     for(0..3) |j| {
+
+            if(matrix[0][j]==player and
+                matrix[1][j]==player
+                and matrix[2][j]==player)
+                  return player;
 
               }
+
+
+
+
+
       }
-    }
-
-}
